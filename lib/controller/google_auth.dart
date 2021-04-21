@@ -3,6 +3,7 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:google_sign_in/google_sign_in.dart';
+import 'package:notesapp/controller/helper_function.dart';
 import 'package:notesapp/screens/home.dart';
 
 GoogleSignIn googleSignIn = GoogleSignIn();
@@ -36,6 +37,8 @@ Future<bool> signInWithGoogle(BuildContext context) async{
         if(doc.exists){
           //old User
           doc.reference.update(userData);
+          HelperFunctions.saveUserLoggedInSharedPreference(true);
+          HelperFunctions.saveUserNameSharedPreference(userData['name'].toString());
           Navigator.pushReplacement(context, MaterialPageRoute(
             builder: (context) => Home(),
             )
@@ -44,6 +47,8 @@ Future<bool> signInWithGoogle(BuildContext context) async{
         }else{
           //new user
           users.doc(user.uid).set(userData);
+           HelperFunctions.saveUserLoggedInSharedPreference(true);
+          HelperFunctions.saveUserNameSharedPreference(userData['name'].toString());
           Navigator.pushReplacement(context, MaterialPageRoute(
             builder: (context) => Home(),
             )

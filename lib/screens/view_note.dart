@@ -19,8 +19,10 @@ class _ViewNoteState extends State<ViewNote> {
 
   @override
   void initState() {
-    titleController.text = widget.data['title'].toString();
-    descriptionController.text = widget.data['description'].toString();
+    setState(() {
+      titleController.text = widget.data['title'].toString();
+      descriptionController.text = widget.data['description'].toString();
+    });
     super.initState();
   }
 

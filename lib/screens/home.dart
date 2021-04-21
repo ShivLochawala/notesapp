@@ -13,7 +13,6 @@ class Home extends StatefulWidget {
 }
 
 class _HomeState extends State<Home> {
-
   
   CollectionReference reference = FirebaseFirestore
     .instance
@@ -23,9 +22,10 @@ class _HomeState extends State<Home> {
 
   @override
   void initState() {
-    setState(() {
-    });
     super.initState();
+    this.setState(() {
+      allNotes();
+    });
   }
 
   Widget allNotes(){
@@ -104,30 +104,37 @@ class _NotesTileState extends State<NotesTile> {
     Colors.deepPurple[200],
     Colors.orange[200]
   ];  
-
+  String _title;
+  String _created;
+  Map _data;
+  DocumentReference _ref;
   @override
   void initState() {
-    setState(() {
-      
-    });
     super.initState();
+    this.setState(() {
+       _title = widget.title;
+      _created = widget.created;
+      _data = widget.data;
+      _ref = widget.ref;
+    });
   }
 
   @override
   Widget build(BuildContext context) {
     Random random = new Random();
     Color bg = cardColor[random.nextInt(4)];
+    
     return GestureDetector(
       onTap: (){
         setState(() {
           Navigator.of(context).push(MaterialPageRoute(
           builder: (context) => ViewNote(
-            data: widget.data,
-            time: widget.created,
-            ref: widget.ref,
+            data: _data,
+            time: _created,
+            ref: _ref,
             )
           )
-          );
+          ).then((value) => setState(() {}));
         });
       },
       child:Card(
@@ -139,7 +146,7 @@ class _NotesTileState extends State<NotesTile> {
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               Container(
-                child: Text(widget.title, 
+                child: Text(_title, 
                   style: TextStyle(
                     fontSize: 24,
                     color: Colors.black87,
@@ -152,7 +159,7 @@ class _NotesTileState extends State<NotesTile> {
                 padding: EdgeInsets.only(top:8.0, bottom:8.0),
                 alignment: Alignment.bottomRight,
                 child: Text(
-                  widget.created,
+                  _created,
                   style: TextStyle(
                     fontSize: 20,
                     color: Colors.black87
